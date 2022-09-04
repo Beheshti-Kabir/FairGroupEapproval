@@ -1,0 +1,56 @@
+{
+  "name": "approval",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/helper-compilation-targets": "^7.13.16",
+    "@babel/helper-create-regexp-features-plugin": "^7.14.3",
+    "@babel/helper-validator-identifier": "^7.14.0",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "ajv": "^6.8.1",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "call-bind": "^1.0.2",
+    "gensync": "*",
+    "get-intrinsic": "^1.1.1",
+    "html5-file-selector": "^2.1.0",
+    "is-string": "^1.0.6",
+    "moment": "^2.29.1",
+    "object-inspect": "^1.10.3",
+    "react": "^16.8.1",
+    "react-bootstrap": "^1.5.2",
+    "react-confirm-alert": "^2.7.0",
+    "react-cookie": "^4.0.3",
+    "react-datepicker": "^4.1.1",
+    "react-dom": "^16.8.1",
+    "react-dropdown-select": "^4.7.4",
+    "react-dropzone": "^11.3.2",
+    "react-fullscreen-loading": "0.0.4",
+    "react-image-gallery": "^1.0.9",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.1.3",
+    "react-time-ago": "^6.2.2",
+    "react-validation": "^3.0.7",
+    "universal-cookie": "^4.0.4",
+    "validator": "^13.6.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "babel-plugin-dynamic-import-node": "^2.2.0"
+  }
+}

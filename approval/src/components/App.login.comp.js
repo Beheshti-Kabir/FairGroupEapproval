@@ -1,0 +1,213 @@
+import React, { Component } from "react";
+import Form from "react-validation/build/form";
+import Input from "react-validation/build/input";
+import CheckButton from "react-validation/build/button";
+import Layout from "./Layout.comp";
+import AuthService from "../services/Auth.service";
+import CookieService from "../services/cookie.service";
+
+const required = value => {
+    if (!value) {
+        return (
+                <div className="alert alert-danger" role="alert">
+                    This field is required!
+                </div>
+                );
+    }
+};
+
+export default class Logme extends Component {
+    constructor(props) {
+        super(props);
+        this.handleLogin = this.handleLogin.bind(this);
+        this.onChangeUsername = this.onChangeUsername.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+
+        this.state = {
+            username: "",
+            password: "",
+            isRem: false,
+            loading: false,
+            message: ""
+        };
+    }
+
+    onChangeUsername(e) {
+        this.setState({
+            username: e.target.value
+        });
+    }
+
+    onChangePassword(e) {
+        this.setState({
+            password: e.target.value
+        });
+    }
+
+    handleLogin(e) {
+        e.preventDefault();
+
+        this.setState({
+            message: "",
+            loading: true
+        });
+
+        this.form.validateAll();
+
+        if (this.checkBtn.context._errors.length === 0) {
+            //alert(JSON.stringify(this.state));
+            AuthService.login(this.state.username, this.state.password, this.state.isRem)
+                    .then((res) => {
+
+                        // alert('kkkkkkkkaaa' + JSON.stringify(res.data));
+
+                        if (res.data.accessToken) {
+
+                            var options;
+                            if (!this.state.isRem) {
+                                options = {path: '/'};
+                            } else {
+                                let date = new Date();
+                                date.setTime(date.getTime() + AuthService.EXPIRE_AT * 60 * 1000);
+                                options = {path: '/', expires: date};
+                            }
+                            //  CookieService.set("access_token", res.data.accessToken, options);
+                            //  CookieService.set("user", {uid: res.data.uid, displayName: res.data.displayName}, options);
+                            CookieService.set("gbl", {userType:res.data.userType,dp:res.data.dp,access_token: res.data.accessToken, user: {userType:res.data.userType,email:res.data.email,uid: res.data.uid, displayName: res.data.displayName,dp:res.data.dp}}, options);
+
+
+                            this.setState({
+                                loading: false,
+                            });
+
+                            this.props.history.push("/home");
+                            window.location.reload();
+                           // alert(JSON.stringify(res.data));
+                        }
+                    },
+                            error => {
+                                const resMessage =
+                                        (error.response &&
+                                                error.response.data &&
+                                                error.response.data.message) ||
+                                        error.message ||
+                                        error.toString();
+
+                                this.setState({
+                                    loading: false,
+                                    message: resMessage
+                                });
+                            }
+                    );
+        } else {
+            this.setState({
+                loading: false
+            });
+        }
+    }
+
+    render() {
+        return (
+                     <div className="col-md-12">
+                        <div className="card card-container">
+                            <img
+                                src="/fdl_logo.png"
+                                alt="profile-img"
+                                className=""
+                                />
+                
+                            {/*<h5 className="card-title">Login</h5>*/}
+                
+                            <Form
+                                onSubmit={this.handleLogin}
+                                ref={c => {
+                                                this.form = c;
+                                            }}
+                                >
+                                <div className="form-group">
+                                    {/*<label htmlFor="username">Username</label>*/}
+                                    <Input
+                                        type="text" placeholder="Username"
+                                        autofocus="true"
+                                        className="form-control"
+                                        name="username"
+                                        value={this.state.username}
+                                        onChange={this.onChangeUsername}
+                                        validations={[required]}
+                                        />
+                                </div>
+                
+                                <div className="form-group">
+                                    {/*<label htmlFor="password">Password</label>*/}
+                                    <Input
+                                        type="password" placeholder="Password"
+                                        className="form-control"
+                                        name="password"
+                                        value={this.state.password}
+                                        onChange={this.onChangePassword}
+                                        validations={[required]}
+                                        />
+                                </div>
+{/*
+                                <div className="icheck-primary">
+                                    <label htmlFor="password">Password</label>
+                                    <Input id="remember"
+                                        type="checkbox"
+                                        className=""
+                                        name="isRem"
+                                        value={this.state.isRem}
+                                    />
+                                    <label htmlFor="remember">
+                                        Remember Me
+                                    </label>
+                                </div>*/}
+                                <div  className="midl">
+                                    <input
+                                           name="isRem" className=""
+                                           value={this.state.isRem}
+                                           type="checkbox"/>
+                                        <label>
+                                            Remember Me
+                                        </label>
+                                </div>
+                
+                               {/* <label>
+                                    <Input
+                                        type="checkbox"
+                                        className=""
+                                        name="isRem"
+                                        value={this.state.isRem}
+                                        />
+                                    Remember Me</label>*/}
+                
+                                <div className="form-group">
+                                    <button
+                                        className="btn btn-primary btn-block"
+                                        disabled={this.state.loading}
+                                        >
+                                        {this.state.loading && (
+                                    <span className="spinner-border spinner-border-sm"></span>
+                                                    )}
+                                        <span>Login</span>
+                                    </button>
+                                </div>
+                
+                                {this.state.message && (
+                                    <div className="form-group">
+                                        <div className="alert alert-danger" role="alert">
+                                            {this.state.message}
+                                        </div>
+                                    </div>
+                                            )}
+                                <CheckButton
+                                    style={{display: "none"}}
+                                    ref={c => {
+                                            this.checkBtn = c;
+                                        }}
+                                    />
+                            </Form>
+                        </div>
+                    </div>
+                 );
+    }
+}

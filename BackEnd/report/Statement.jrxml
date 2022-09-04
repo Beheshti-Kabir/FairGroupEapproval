@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AgentStatement" pageWidth="680" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="640" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2dd97bdf-fa9a-4eda-b718-09691277e0ee">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="searchID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fromDate" class="java.lang.String"/>
+	<parameter name="toDate" class="java.lang.String"/>
+	<parameter name="transType" class="java.lang.String"/>
+	<parameter name="imagePath" class="java.lang.String"/>
+	<parameter name="branchName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="branchID" class="java.lang.String"/>
+	<parameter name="imagePathLogo" class="java.lang.String"/>
+	<parameter name="district" class="java.lang.String"/>
+	<parameter name="servicePointName" class="java.lang.String"/>
+	<parameter name="servicePointID" class="java.lang.String"/>
+	<parameter name="agentName" class="java.lang.String"/>
+	<parameter name="agentID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="transactionDate" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="deposit" class="java.math.BigDecimal"/>
+	<field name="withdrawal" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="55">
+			<frame>
+				<reportElement mode="Opaque" x="1" y="1" width="638" height="54" backcolor="#FFFFFF" uuid="c66445e4-2c1b-4109-9fe7-68436e415913"/>
+				<staticText>
+					<reportElement key="staticText-1" x="188" y="0" width="255" height="24" uuid="c553cb0a-6657-460f-bfe2-bf88dda3bd51"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="15" isBold="true"/>
+					</textElement>
+					<text><![CDATA[The ABC Bank Ltd.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-1" x="188" y="24" width="255" height="15" uuid="6f040938-1e5f-4823-9da5-def65b77a4be"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<text><![CDATA[IB Banking Division]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText-1" x="188" y="40" width="255" height="13" uuid="6d3eef0c-9e02-467a-a296-43679e3943c1"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[ Statement Report]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="60" height="16" uuid="d42596ac-5209-48ba-a274-da98fecf4864"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Branch :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="2" width="100" height="16" uuid="d434d8d1-533c-4798-82c8-2abdc0358e2b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{branchName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="564" y="3" width="75" height="16" uuid="adf47a1c-f86d-4d88-bd3c-7e68d5852f41"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="528" y="3" width="36" height="16" uuid="d42596ac-5209-48ba-a274-da98fecf4864"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[As on  :]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="640" height="20" forecolor="#FFFFFF" backcolor="#CCCCCC" uuid="77f34b51-489a-434b-9e51-70a19a639e57"/>
+				<staticText>
+					<reportElement x="61" y="0" width="100" height="20" uuid="affd57b2-2519-4fbd-b64c-874033ba7a58"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="317" y="0" width="160" height="20" uuid="5938f78a-0fd7-4153-8e85-0a2ff2f3e95f"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<text><![CDATA[Deposit]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="477" y="0" width="160" height="20" uuid="b650182f-1bf8-4fcb-a2e8-555afb0ad991"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<text><![CDATA[Withdrawal]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="60" height="20" uuid="7078763d-f6ca-43f6-b7c4-1e299f661751"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle"/>
+					<text><![CDATA[SL. NO]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="19" width="640" height="1" forecolor="#CCCCCC" uuid="ffce846c-c9d8-443c-afe9-8f6c10482fdd"/>
+				<graphicElement>
+					<pen lineWidth="0.25"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="60" y="0" width="100" height="20" uuid="4b03154c-932c-4b79-add9-bc05f044d633"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{transactionDate}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement x="478" y="0" width="160" height="20" uuid="b8e963aa-449f-4844-8497-64dbc51afb57"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{withdrawal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-1" y="0" width="60" height="20" uuid="81a397a1-1436-459d-928e-b8f3c1e4eab8"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.##;(#,##0.##)" isBlankWhenNull="true">
+				<reportElement x="317" y="0" width="160" height="20" uuid="4d9fe964-18e5-43e4-bff4-7b85dc5c064c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{deposit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="260" y="8" width="80" height="20" uuid="438932d2-4338-4721-9841-57b7b0dfb206"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="340" y="8" width="40" height="20" uuid="5f643bc3-adcd-427f-856b-a5c92f6df9c7"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

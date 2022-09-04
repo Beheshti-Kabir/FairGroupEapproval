@@ -1,0 +1,66 @@
+server:
+  port: 4001
+#  servlet.context-path: /
+#  servlet.context-path: /approval
+
+#url: jdbc:postgresql://mac:5432/postgres
+#username: macpguser
+#password: Asdf1234
+
+spring:
+  #  local data source
+  datasource:
+    platform: oracle
+    continue-on-error: true
+    username: WFLOW
+    password: wflow357
+    url: jdbc:oracle:thin:@65.1.148.3:1521:midb
+#    username: hr
+#    password: hr
+#    url: jdbc:oracle:thin:@localhost:1521:orcl
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    #properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    show-sql: true
+    hibernate.ddl-auto: update
+    hibernate.naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    generate-ddl: true
+
+  http:
+    multipart:
+      enabled: true
+      max-file-size: 128MB
+      max-request-size: 128MB
+
+  servlet:
+    multipart:
+      enabled: true
+      maxFileSize: 500MB
+      maxRequestSize: 500MB
+      file-size-threshold: 500MB
+
+  mail:
+#      host: 202.84.44.230
+      host: localhost
+      port: 587
+      username: approval@fairgroupbd.com
+      password: A@2021
+      protocol: smtp
+      properties:
+        mail:
+          transport.protocol: smtp
+          debug: true
+          smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: 202.84.44.230
+
+  data:
+    jpa:
+      repositories:
+        enabled: true
+

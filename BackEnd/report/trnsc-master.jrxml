@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AgentStatement" pageWidth="680" pageHeight="1000" whenNoDataType="NoDataSection" columnWidth="600" leftMargin="50" rightMargin="30" topMargin="40" bottomMargin="30" uuid="2dd97bdf-fa9a-4eda-b718-09691277e0ee">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_TRNSC_MASTER_ID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[SELECT 'To: The Honorable '||(select (replace(UPPER(name),'GROUP',NULL)) from approval_history ah where ah.mst_id=M.ID and ID=(select max(id) from approval_history ah1 where ah1.mst_id=M.ID)) To_Address,
+'From: '||(SELECT DESCRIPTION FROM LOOKUP_DETAIL WHERE ID=LOOKUP_DETAIL_DEPARTMENT_ID) DEPARTMENT,
+'Submited By: '||
+(SELECT MAX(AUTH_USER_SUBMIT_NAME||' ('||u.code||')') FROM APPROVAL_HISTORY h, auth_user u  WHERE h.AUTH_USER_SUBMIT_ID=u.id and MST_ID=M.ID AND LEVEL_NO=1) AUTH_USER_SUBMIT_NAME,
+'Date: '||TRUNC(TRNSC_DATE) TRNSC_DATE,
+'Bill Number: '|| m.code|| ', Total Amount: '|| m.total_amount|| CASE WHEN m.description IS NOT NULL THEN ', Description: ' || m.description END subject,
+(SELECT COMPANY_NAME FROM COMPANY_INFO WHERE ID=COMPANY_INFO_ID) COMPANY,
+(SELECT DESCRIPTION FROM LOOKUP_DETAIL WHERE ID=LOOKUP_DETAIL_FUND_SOURCE_ID) fund_source,
+APPROVAL_STATUS,M.CODE BILL_NUMBER,TERMS_CONDITION,(SELECT DESCRIPTION FROM LOOKUP_DETAIL WHERE ID=LOOKUP_DETAIL_TRNSC_TYPE_ID) BILL_TYPE,
+M.ID,TOTAL_AMOUNT,M.DESCRIPTION MASTER_DESC, APP.LEVEL_NO,APP.NAME,TO_CHAR(REQ_DATE,'DD-MON-RRRR HH24:MI:SS')REQUEST_DATE,TO_CHAR(RES_DATE,'DD-MON-RRRR HH24:MI:SS') RESPONSE_DATE,APP.STATUS,AUTH_USER_ACTION_BY_NAME RESPONSE_BY
+--(SELECT CODE FROM LOOKUP_DETAIL WHERE ID=LOOKUP_DETAIL_PARTICULAR_ID) PARTICULAR
+FROM TRNSC_MASTER M, APPROVAL_HISTORY APP
+WHERE 1=1
+AND M.ID=APP.MST_ID(+)
+--AND M.APPROVAL_STATUS<>'DRAFT'
+AND M.ID=$P{P_TRNSC_MASTER_ID}]]>
+	</queryString>
+	<field name="TO_ADDRESS" class="java.lang.String"/>
+	<field name="DEPARTMENT" class="java.lang.String"/>
+	<field name="AUTH_USER_SUBMIT_NAME" class="java.lang.String"/>
+	<field name="TRNSC_DATE" class="java.lang.String"/>
+	<field name="SUBJECT" class="java.lang.String"/>
+	<field name="COMPANY" class="java.lang.String"/>
+	<field name="FUND_SOURCE" class="java.lang.String"/>
+	<field name="APPROVAL_STATUS" class="java.lang.String"/>
+	<field name="BILL_NUMBER" class="java.lang.String"/>
+	<field name="TERMS_CONDITION" class="java.lang.String"/>
+	<field name="BILL_TYPE" class="java.lang.String"/>
+	<field name="ID" class="java.math.BigDecimal"/>
+	<field name="TOTAL_AMOUNT" class="java.lang.Double"/>
+	<field name="MASTER_DESC" class="java.lang.String"/>
+	<field name="LEVEL_NO" class="java.lang.String"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="REQUEST_DATE" class="java.lang.String"/>
+	<field name="RESPONSE_DATE" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="RESPONSE_BY" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="1" width="579" height="27" backcolor="#FFFFFF" uuid="c66445e4-2c1b-4109-9fe7-68436e415913"/>
+				<staticText>
+					<reportElement key="staticText-1" x="35" y="3" width="544" height="24" uuid="c553cb0a-6657-460f-bfe2-bf88dda3bd51"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Top">
+						<font size="18" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Approval Note]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="519" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="135" y="347" width="405" height="20" uuid="fac1d68b-9a40-4c17-a039-fbf9b4e87c2b"/>
+				<textFieldExpression><![CDATA[$F{TOTAL_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="14" y="70" width="290" height="20" uuid="2cc5540a-fd05-4de4-89cd-66f32f865032"/>
+				<textFieldExpression><![CDATA[$F{TRNSC_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="134" y="378" width="452" height="20" uuid="9bf57d72-f093-410d-a321-de685870870e"/>
+				<textFieldExpression><![CDATA[$F{MASTER_DESC}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="347" width="120" height="20" uuid="5812e829-c6fa-4a49-ac22-3072e8567ab2"/>
+				<text><![CDATA[Bill Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="378" width="120" height="20" uuid="0cc57f4c-1f2a-45af-ac19-b7091af2a003"/>
+				<text><![CDATA[Bill Description]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="14" y="0" width="441" height="20" uuid="0257f6e4-896b-4378-9075-7145debfc092"/>
+				<textFieldExpression><![CDATA[$F{TO_ADDRESS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="14" y="23" width="441" height="20" uuid="2c3e3d0d-04e8-49f6-9095-2525c15ca4ec"/>
+				<textFieldExpression><![CDATA[$F{DEPARTMENT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="">
+				<reportElement x="69" y="94" width="517" height="20" uuid="1724ed48-79bf-4953-b164-bb5a6d7afbe4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SUBJECT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="171" width="571" height="46" uuid="af37c117-46bc-4342-acad-405449a1b66c"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Dear Sir,
+
+Request to approved mention bill with bellow details
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="226" width="120" height="20" uuid="9df9126f-e70c-4bb4-9d98-ae5088273d00"/>
+				<text><![CDATA[Company: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="134" y="226" width="452" height="20" uuid="dbda8d79-86c2-449c-ba9f-e3b1bf7a919e"/>
+				<textFieldExpression><![CDATA[$F{COMPANY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="15" y="255" width="120" height="20" uuid="0681c3a9-d3ac-411f-a4cc-d2840ee8c3c8"/>
+				<text><![CDATA[Func Source:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="134" y="255" width="452" height="20" uuid="ac7e60eb-9221-4d75-aa02-02c0873bdd82"/>
+				<textFieldExpression><![CDATA[$F{FUND_SOURCE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="285" width="120" height="20" uuid="6077ccad-08d0-4292-b626-a9ab909918b4"/>
+				<text><![CDATA[Bill Type:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="135" y="285" width="452" height="20" uuid="9a9560f8-0fc3-44ae-b00a-8e3f0eb434db"/>
+				<textFieldExpression><![CDATA[$F{BILL_TYPE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="316" width="120" height="20" uuid="1aad2221-87d8-435f-8a44-4909f4bc5cd7"/>
+				<text><![CDATA[Bill Number:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="135" y="316" width="452" height="20" uuid="2d20974a-15bb-4bc7-a3b4-55b91afdbf1b"/>
+				<textFieldExpression><![CDATA[$F{BILL_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="436" width="120" height="20" uuid="513d6d9e-b400-4542-8e09-41b555905da6"/>
+				<text><![CDATA[Terms and Condition:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="135" y="436" width="452" height="20" uuid="229aa6d9-75da-4b17-a28f-64a6eeee96fc"/>
+				<textFieldExpression><![CDATA[$F{TERMS_CONDITION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="94" width="54" height="20" uuid="7d30c9ce-645c-414a-8c56-3fd5bcb67886"/>
+				<text><![CDATA[Subject:]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="15" y="47" width="571" height="20" uuid="a3740b0c-f568-43da-9084-53c5807b96ba"/>
+				<textFieldExpression><![CDATA[$F{AUTH_USER_SUBMIT_NAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="172" y="0" width="80" height="20" backcolor="#CCCCCC" uuid="93f822a0-7999-4e40-9450-8170386b286e"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Requested Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="332" y="0" width="80" height="20" backcolor="#CCCCCC" uuid="fbc605af-6870-4647-bfaf-176d31f61c41"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="252" y="0" width="80" height="20" backcolor="#CCCCCC" uuid="07282382-2719-45a6-af75-84ac6b706a97"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Responsed Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="15" y="0" width="54" height="20" backcolor="#CCCCCC" uuid="cec4eb56-fb62-4509-ad01-bccd6b1f3d37"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Level No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="69" y="0" width="103" height="20" backcolor="#CCCCCC" uuid="6f142359-92f9-4853-9b7c-9a139255325c"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Approver Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="412" y="0" width="185" height="20" backcolor="#CCCCCC" uuid="b50f64ff-9ce0-4cd1-9408-e8dd3454f137"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Responsed By]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="dd/MM/yy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="172" y="0" width="80" height="20" uuid="981588f1-3367-4bec-9e02-58c3abbbeaf1"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{REQUEST_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="332" y="0" width="80" height="20" uuid="f1d997e2-c309-40b5-86a8-bf18ea6d0a0d"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{STATUS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement x="252" y="0" width="80" height="20" uuid="cd6178d0-f00b-49e2-a1b2-8fc1fb1de3a0"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{RESPONSE_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="15" y="0" width="54" height="20" uuid="55d65acf-97ee-4606-a991-8e3bab800eed"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{LEVEL_NO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="69" y="0" width="103" height="20" uuid="10dd30bd-0592-40de-a344-81b6df5c35af"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="412" y="0" width="185" height="20" uuid="59314083-7b13-4792-b6e0-1683d31409b2"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{RESPONSE_BY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="55">
+			<textField>
+				<reportElement x="17" y="35" width="80" height="20" uuid="438932d2-4338-4721-9841-57b7b0dfb206"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="97" y="35" width="40" height="20" uuid="5f643bc3-adcd-427f-856b-a5c92f6df9c7"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="17" y="15" width="583" height="20" uuid="468893aa-47e6-46c1-bf38-ef7a87f0ddf0"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[This approval is computer generated, no sign and seal is required]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>
